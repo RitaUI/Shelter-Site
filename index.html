@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PawsHome — Log In</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ============================================================
+       DESIGN TOKENS  (Twine.com hero aesthetic + animal shelter warmth)
+       Primary accent : #7C5CFC  (warm violet — Lovable/modern SaaS)
+       Gradient blobs : soft peach #FFE0C8  →  soft lavender #DDD6FE
+       Background     : warm off-white #FDFCFB
+       Text primary   : #1A1628   secondary: #64748B
+    ============================================================ */
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body { height: 100%; }
+
+    body {
+      font-family: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: #FDFDFC;
+      color: #1A1628;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* ============================================================
+       PAGE SHELL
+    ============================================================ */
+    .page {
+      min-height: 100vh;
+      display: flex;
+      align-items: stretch;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Soft gradient blobs over warm linen background */
+    .page::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 700px 600px at -10% 10%,  rgba(235, 96, 56, 0.10) 0%, transparent 65%),
+        radial-gradient(ellipse 600px 550px at 110% 80%,  rgba(200, 150, 110, 0.12) 0%, transparent 65%),
+        radial-gradient(ellipse 400px 400px at 55%  -5%,  rgba(255, 200, 160, 0.10) 0%, transparent 60%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ============================================================
+       LEFT PANEL — FORM
+    ============================================================ */
+    .left-panel {
+      flex: 0 0 50%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 56px 48px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .form-wrap {
+      width: 100%;
+      max-width: 392px;
+    }
+
+    /* ---- Logo ---- */
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 44px;
+    }
+
+    .logo-mark {
+      width: 38px;
+      height: 38px;
+      background: #EB6038;
+      border-radius: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .logo-wordmark {
+      font-size: 17px;
+      font-weight: 800;
+      color: #1A1628;
+      letter-spacing: -0.3px;
+    }
+
+    /* ---- Header ---- */
+    .form-head { margin-bottom: 30px; }
+
+    .form-title {
+      font-size: 26px;
+      font-weight: 800;
+      color: #1A1628;
+      letter-spacing: -0.6px;
+      line-height: 1.22;
+      margin-bottom: 7px;
+    }
+
+    .form-sub {
+      font-size: 14.5px;
+      color: #64748B;
+      font-weight: 400;
+      line-height: 1.5;
+    }
+
+    .form-sub a {
+      color: #EB6038;
+      font-weight: 600;
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+    .form-sub a:hover { color: #C94E2A; text-decoration: underline; }
+
+    /* ---- Field group ---- */
+    .field { margin-bottom: 18px; }
+
+    .field-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 6px;
+      letter-spacing: 0.015em;
+    }
+
+    .field-input {
+      width: 100%;
+      padding: 11px 14px;
+      font-family: 'Manrope', sans-serif;
+      font-size: 14.5px;
+      font-weight: 400;
+      color: #1A1628;
+      background: #FFFFFF;
+      border: 1.5px solid #E2E8F0;
+      border-radius: 10px;
+      -webkit-appearance: none;
+      outline: none;
+      transition: border-color 0.18s, box-shadow 0.18s;
+      appearance: none;
+    }
+
+    .field-input::placeholder { color: #A8B4C8; }
+
+    /* Keep white fill even on browser autofill */
+    .field-input:-webkit-autofill,
+    .field-input:-webkit-autofill:hover,
+    .field-input:-webkit-autofill:focus {
+      -webkit-box-shadow: 0 0 0 1000px #FFFFFF inset;
+      -webkit-text-fill-color: #1A1628;
+    }
+
+    .field-input:focus {
+      border-color: #EB6038;
+      box-shadow: 0 0 0 3.5px rgba(235, 96, 56, 0.13);
+    }
+
+    /* ---- Password row ---- */
+    .pwd-label-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+
+    .forgot {
+      font-size: 13px;
+      font-weight: 500;
+      color: #EB6038;
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+    .forgot:hover { color: #C94E2A; text-decoration: underline; }
+
+    .pwd-wrap { position: relative; }
+    .pwd-wrap .field-input { padding-right: 46px; }
+
+    .pwd-toggle {
+      position: absolute;
+      right: 13px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+      color: #A8B4C8;
+      display: flex;
+      align-items: center;
+      border-radius: 6px;
+      transition: color 0.15s;
+    }
+    .pwd-toggle:hover { color: #EB6038; }
+
+    /* ---- CTA ---- */
+    .btn-login {
+      width: 100%;
+      margin-top: 6px;
+      padding: 13px 20px;
+      font-family: 'Manrope', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      color: #FFFFFF;
+      background: #2C2C2C;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      letter-spacing: 0.01em;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
+      transition: opacity 0.18s, transform 0.15s, box-shadow 0.18s, background 0.18s;
+    }
+    .btn-login:hover {
+      background: #1A1A1A;
+      transform: translateY(-1.5px);
+      box-shadow: 0 7px 22px rgba(0, 0, 0, 0.26);
+    }
+    .btn-login:active { transform: translateY(0); background: #2C2C2C; }
+
+    /* ---- Divider ---- */
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 22px 0;
+    }
+    .divider-line { flex: 1; height: 1px; background: #EAF0FA; }
+    .divider-label {
+      font-size: 12.5px;
+      font-weight: 500;
+      color: #A8B4C8;
+      white-space: nowrap;
+    }
+
+    /* ---- Social buttons ---- */
+    .socials { display: flex; gap: 10px; }
+
+    .btn-social {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      padding: 10px 10px;
+      font-family: 'Manrope', sans-serif;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #374151;
+      background: #FFFFFF;
+      border: 1.5px solid #E2E8F0;
+      border-radius: 10px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.15s, border-color 0.15s, box-shadow 0.15s, transform 0.12s;
+    }
+    .btn-social:hover {
+      background: #FDF3EF;
+      border-color: #F0A88E;
+      box-shadow: 0 2px 8px rgba(235, 96, 56, 0.11);
+      transform: translateY(-1px);
+    }
+    .btn-social:active { transform: translateY(0); }
+
+    /* ============================================================
+       RIGHT PANEL — IMAGE FRAME
+    ============================================================ */
+    .right-panel {
+      flex: 0 0 50%;
+      /* 16px gap from top, right, bottom of viewport */
+      padding: 16px 16px 16px 0;
+      display: flex;
+      align-items: stretch;
+      position: relative;
+      z-index: 1;
+    }
+
+    .img-frame {
+      flex: 1;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow:
+        0 8px 32px rgba(100, 60, 180, 0.14),
+        0 2px 10px rgba(0, 0, 0, 0.07);
+      position: relative;
+      background: linear-gradient(150deg, #FFE0C8 0%, #F8D0F5 45%, #D5CCFF 100%);
+    }
+
+    .img-frame img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Caption overlay at the bottom */
+    .img-caption {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 36px 28px 28px;
+      background: linear-gradient(to top, rgba(18, 8, 35, 0.72) 0%, transparent 100%);
+      z-index: 2;
+    }
+
+    .img-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(255,255,255,0.18);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      border: 1px solid rgba(255,255,255,0.28);
+      border-radius: 999px;
+      padding: 4px 11px;
+      font-size: 11.5px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.92);
+      letter-spacing: 0.02em;
+      margin-bottom: 10px;
+    }
+
+    .img-title {
+      font-size: 22px;
+      font-weight: 800;
+      color: #FFFFFF;
+      line-height: 1.28;
+      letter-spacing: -0.3px;
+      margin-bottom: 5px;
+    }
+
+    .img-sub {
+      font-size: 14px;
+      font-weight: 400;
+      color: rgba(255,255,255,0.78);
+      line-height: 1.5;
+    }
+
+    /* Fallback (shown if image fails to load) */
+    .img-fallback {
+      position: absolute;
+      inset: 0;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+      text-align: center;
+    }
+
+    .img-fallback.visible { display: flex; }
+
+    .fallback-illo { margin-bottom: 24px; }
+
+    .fallback-h {
+      font-size: 20px;
+      font-weight: 800;
+      color: #3B2A6E;
+      margin-bottom: 8px;
+      letter-spacing: -0.3px;
+    }
+
+    .fallback-p {
+      font-size: 14px;
+      color: #6B5B95;
+      line-height: 1.6;
+      max-width: 280px;
+    }
+
+    /* ============================================================
+       RESPONSIVE
+    ============================================================ */
+
+    /* Tablet: 768–1024px */
+    @media (max-width: 1024px) {
+      .left-panel  { flex: 0 0 55%; padding: 48px 40px; }
+      .right-panel { flex: 0 0 45%; }
+    }
+
+    /* Small tablet / large phone: hide image, full-width form */
+    @media (max-width: 768px) {
+      .page { background:
+        radial-gradient(ellipse 500px 400px at -10% 5%,  rgba(235, 96, 56, 0.10) 0%, transparent 65%),
+        radial-gradient(ellipse 400px 400px at 110% 90%, rgba(200, 150, 110, 0.12) 0%, transparent 65%),
+        #FDFDFC;
+      }
+      .page::before { display: none; }
+      .right-panel  { display: none; }
+      .left-panel   {
+        flex: 1;
+        padding: 48px 32px;
+        min-height: 100vh;
+      }
+    }
+
+    /* Mobile */
+    @media (max-width: 480px) {
+      .left-panel   { padding: 36px 20px; align-items: flex-start; }
+      .form-wrap    { max-width: 100%; }
+      .form-title   { font-size: 22px; }
+      .socials      { flex-direction: column; }
+      .btn-social   { flex: none; justify-content: flex-start; gap: 10px; }
+      .logo         { margin-bottom: 36px; }
+    }
+  </style>
+</head>
+
+<body>
+<div class="page">
+
+  <!-- ═══════════════════════════════════════
+       LEFT  –  Login form
+  ═══════════════════════════════════════ -->
+  <div class="left-panel">
+    <div class="form-wrap">
+
+      <!-- Logo -->
+      <div class="logo">
+        <div class="logo-mark">
+          <!-- paw icon -->
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="5.5"  cy="8.5"  rx="2"   ry="2.8" />
+            <ellipse cx="18.5" cy="8.5"  rx="2"   ry="2.8" />
+            <ellipse cx="9.5"  cy="5.5"  rx="1.7" ry="2.3" />
+            <ellipse cx="14.5" cy="5.5"  rx="1.7" ry="2.3" />
+            <path d="M12 10c-3.5 0-6 2.5-5.5 5.5.3 1.8 1.5 3.2 3 3.8.9.4 1.7 1 2.5 1s1.6-.6 2.5-1c1.5-.6 2.7-2 3-3.8C18 12.5 15.5 10 12 10z"/>
+          </svg>
+        </div>
+        <span class="logo-wordmark">PawsHome</span>
+      </div>
+
+      <!-- Heading -->
+      <div class="form-head">
+        <h1 class="form-title">Log in to your account</h1>
+        <p class="form-sub">Don't have an account? <a href="#">Sign up</a></p>
+      </div>
+
+      <!-- Form -->
+      <form onsubmit="handleLogin(event)">
+
+        <!-- Email -->
+        <div class="field">
+          <label class="field-label" for="email">Email address</label>
+          <input
+            class="field-input"
+            type="email"
+            id="email"
+            name="email"
+            placeholder="you@example.com"
+            autocomplete="email"
+            required
+          />
+        </div>
+
+        <!-- Password -->
+        <div class="field">
+          <div class="pwd-label-row">
+            <label class="field-label" for="password" style="margin-bottom:0">Password</label>
+            <a href="#" class="forgot">Forgot password?</a>
+          </div>
+          <div class="pwd-wrap">
+            <input
+              class="field-input"
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Enter your password"
+              autocomplete="current-password"
+              required
+            />
+            <button class="pwd-toggle" type="button" aria-label="Show / hide password" onclick="togglePwd()">
+              <!-- Eye open -->
+              <svg id="eye-open" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                   stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+              <!-- Eye closed (hidden by default) -->
+              <svg id="eye-closed" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                   stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                   style="display:none">
+                <path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94"/>
+                <path d="M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19"/>
+                <path d="M14.12 14.12a3 3 0 01-4.24-4.24"/>
+                <line x1="1" y1="1" x2="23" y2="23"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- CTA -->
+        <button class="btn-login" type="submit">Log in</button>
+
+      </form>
+
+      <!-- Divider -->
+      <div class="divider">
+        <span class="divider-line"></span>
+        <span class="divider-label">or continue with</span>
+        <span class="divider-line"></span>
+      </div>
+
+      <!-- Social login -->
+      <div class="socials">
+
+        <!-- Google -->
+        <button class="btn-social" type="button" aria-label="Log in with Google">
+          <svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
+            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+          </svg>
+          <span>Google</span>
+        </button>
+
+        <!-- Microsoft -->
+        <button class="btn-social" type="button" aria-label="Log in with Microsoft">
+          <svg width="18" height="18" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+            <rect x="1"  y="1"  width="9" height="9" fill="#F25022"/>
+            <rect x="11" y="1"  width="9" height="9" fill="#7FBA00"/>
+            <rect x="1"  y="11" width="9" height="9" fill="#00A4EF"/>
+            <rect x="11" y="11" width="9" height="9" fill="#FFB900"/>
+          </svg>
+          <span>Microsoft</span>
+        </button>
+
+        <!-- Facebook -->
+        <button class="btn-social" type="button" aria-label="Log in with Facebook">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="#1877F2" xmlns="http://www.w3.org/2000/svg">
+            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+          </svg>
+          <span>Facebook</span>
+        </button>
+
+      </div>
+
+    </div>
+  </div><!-- /left-panel -->
+
+
+  <!-- ═══════════════════════════════════════
+       RIGHT  –  Image frame
+       16 px gap: top · right · bottom
+       12 px corner radius + soft shadow
+  ═══════════════════════════════════════ -->
+  <div class="right-panel">
+    <div class="img-frame">
+
+      <!-- Photo (Unsplash — dog + cat) -->
+      <img
+        src="https://images.unsplash.com/photo-1450778869180-41d0601e046e?w=1000&q=82&fit=crop"
+        alt="A friendly dog and cat sitting together"
+        id="shelter-img"
+      />
+
+      <!-- Fallback illustration (shown if photo fails) -->
+      <div class="img-fallback" id="img-fallback">
+        <div class="fallback-illo">
+          <!-- Cute cat + dog SVG illustration -->
+          <svg width="200" height="160" viewBox="0 0 200 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- DOG body -->
+            <ellipse cx="62" cy="108" rx="35" ry="26" fill="#D4A76A" opacity="0.95"/>
+            <!-- DOG head -->
+            <circle cx="62" cy="70" r="24" fill="#D4A76A"/>
+            <!-- DOG ears -->
+            <ellipse cx="50" cy="55" rx="9"  ry="15" fill="#B8905A" transform="rotate(-15 50 55)"/>
+            <ellipse cx="74" cy="55" rx="9"  ry="15" fill="#B8905A" transform="rotate(15 74 55)"/>
+            <!-- DOG eyes -->
+            <circle cx="55" cy="68" r="4.5" fill="#2C1A0E"/>
+            <circle cx="69" cy="68" r="4.5" fill="#2C1A0E"/>
+            <circle cx="56" cy="67" r="1.5" fill="white"/>
+            <circle cx="70" cy="67" r="1.5" fill="white"/>
+            <!-- DOG nose/mouth -->
+            <ellipse cx="62" cy="77" rx="9" ry="6" fill="#C07A5A"/>
+            <ellipse cx="62" cy="78" rx="4"  ry="3" fill="#8B4040"/>
+            <!-- DOG tail -->
+            <path d="M97 100 Q118 80 112 62" stroke="#D4A76A" stroke-width="7" stroke-linecap="round" fill="none"/>
+            <!-- DOG legs -->
+            <rect x="42" y="126" width="10" height="22" rx="5" fill="#C09060"/>
+            <rect x="55" y="126" width="10" height="22" rx="5" fill="#C09060"/>
+            <rect x="68" y="126" width="10" height="22" rx="5" fill="#C09060"/>
+            <rect x="81" y="122" width="10" height="22" rx="5" fill="#C09060"/>
+
+            <!-- CAT body -->
+            <ellipse cx="148" cy="108" rx="30" ry="24" fill="#B0A0C8" opacity="0.95"/>
+            <!-- CAT head -->
+            <circle cx="148" cy="70" r="21" fill="#B0A0C8"/>
+            <!-- CAT ears -->
+            <polygon points="133,56 124,36 142,50" fill="#B0A0C8"/>
+            <polygon points="163,56 172,36 154,50" fill="#B0A0C8"/>
+            <polygon points="134,54 127,38 142,49" fill="#E8B4CC"/>
+            <polygon points="162,54 169,38 154,49" fill="#E8B4CC"/>
+            <!-- CAT eyes -->
+            <circle cx="142" cy="68" r="4" fill="#2C1A0E"/>
+            <circle cx="154" cy="68" r="4" fill="#2C1A0E"/>
+            <circle cx="143" cy="67" r="1.5" fill="white"/>
+            <circle cx="155" cy="67" r="1.5" fill="white"/>
+            <!-- CAT nose -->
+            <ellipse cx="148" cy="75" rx="3.5" ry="2.5" fill="#E87090"/>
+            <!-- CAT whiskers -->
+            <line x1="122" y1="73" x2="145" y2="76" stroke="#8070A0" stroke-width="1.2" opacity="0.55"/>
+            <line x1="122" y1="78" x2="145" y2="78" stroke="#8070A0" stroke-width="1.2" opacity="0.55"/>
+            <line x1="151" y1="76" x2="174" y2="73" stroke="#8070A0" stroke-width="1.2" opacity="0.55"/>
+            <line x1="151" y1="78" x2="174" y2="78" stroke="#8070A0" stroke-width="1.2" opacity="0.55"/>
+            <!-- CAT tail -->
+            <path d="M178 98 Q196 75 190 55" stroke="#B0A0C8" stroke-width="7" stroke-linecap="round" fill="none"/>
+            <!-- CAT legs -->
+            <rect x="130" y="124" width="9"  height="20" rx="4.5" fill="#9888B8"/>
+            <rect x="141" y="126" width="9"  height="20" rx="4.5" fill="#9888B8"/>
+            <rect x="152" y="126" width="9"  height="20" rx="4.5" fill="#9888B8"/>
+            <rect x="163" y="122" width="9"  height="20" rx="4.5" fill="#9888B8"/>
+
+            <!-- Hearts -->
+            <text x="100" y="42" font-size="16" text-anchor="middle" opacity="0.6">🐾</text>
+          </svg>
+        </div>
+        <div class="fallback-h">Find your forever friend</div>
+        <div class="fallback-p">Hundreds of loving animals are waiting to meet you at our shelter.</div>
+      </div>
+
+      <!-- Bottom caption overlay -->
+      <div class="img-caption">
+        <div class="img-tag">
+          <!-- paw icon -->
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="white">
+            <ellipse cx="5.5"  cy="8.5"  rx="2"   ry="2.8"/>
+            <ellipse cx="18.5" cy="8.5"  rx="2"   ry="2.8"/>
+            <ellipse cx="9.5"  cy="5.5"  rx="1.7" ry="2.3"/>
+            <ellipse cx="14.5" cy="5.5"  rx="1.7" ry="2.3"/>
+            <path d="M12 10c-3.5 0-6 2.5-5.5 5.5.3 1.8 1.5 3.2 3 3.8.9.4 1.7 1 2.5 1s1.6-.6 2.5-1c1.5-.6 2.7-2 3-3.8C18 12.5 15.5 10 12 10z"/>
+          </svg>
+          Animal Shelter
+        </div>
+        <div class="img-title">Every pet deserves<br>a loving home.</div>
+        <div class="img-sub">Help us give them a second chance.</div>
+      </div>
+
+    </div>
+  </div><!-- /right-panel -->
+
+</div><!-- /page -->
+
+
+<!-- ============================================================
+     Minimal vanilla JS
+============================================================ -->
+<script>
+  // Password show / hide
+  function togglePwd() {
+    var inp  = document.getElementById('password');
+    var eO   = document.getElementById('eye-open');
+    var eC   = document.getElementById('eye-closed');
+    if (inp.type === 'password') {
+      inp.type    = 'text';
+      eO.style.display = 'none';
+      eC.style.display = 'block';
+    } else {
+      inp.type    = 'password';
+      eO.style.display = 'block';
+      eC.style.display = 'none';
+    }
+  }
+
+  // Image fallback
+  document.getElementById('shelter-img').addEventListener('error', function () {
+    this.style.display = 'none';
+    document.getElementById('img-fallback').classList.add('visible');
+  });
+
+  // Form submit stub (presentation mode)
+  function handleLogin(e) {
+    e.preventDefault();
+    var btn = e.target.querySelector('.btn-login');
+    btn.textContent = 'Logging in…';
+    btn.style.opacity = '0.75';
+    btn.disabled = true;
+    setTimeout(function () {
+      btn.textContent = 'Log in';
+      btn.style.opacity = '';
+      btn.disabled = false;
+    }, 1800);
+  }
+</script>
+
+</body>
+</html>
